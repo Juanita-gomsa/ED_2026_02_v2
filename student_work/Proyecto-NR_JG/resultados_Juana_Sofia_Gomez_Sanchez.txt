@@ -1,0 +1,80 @@
+EVALUACION - Data Stream Processor
+============================================================
+Estudiante : Juana Sofía Gómez Sánchez
+Fecha      : 2026-09-21 19:59:26
+Python     : 3.12.13 (Linux)
+Evaluador  : v1.1
+Clase      : DataProcessor (modulo __main__)
+
+== Interfaz y restricciones ==
+
+[PASS ] Define add, process_next, undo, pending y current_value
+[PASS ] Se puede crear DataProcessor() sin argumentos
+[PASS ] __init__ crea una ArrayQueue, un ArrayStack y una list
+[PASS ] No sustituye Queue/Stack por deque u otra estructura
+[PASS ] ArrayQueue y ArrayStack son las del curso (no reimplementadas)
+
+   Interfaz y restricciones: 5/5 OK
+
+== Pruebas obligatorias (1-17) ==
+
+[PASS ] 1. pending() sobre un procesador vacio
+[PASS ] 2. Agregar un registro
+[PASS ] 3. Agregar varios registros
+[PASS ] 4. Procesamiento FIFO
+[PASS ] 5. Procesar un registro
+[PASS ] 6. Procesar varios registros
+[PASS ] 7. Actualizar una variable existente
+[PASS ] 8. Consultar el valor actual
+[PASS ] 9. Realizar un undo()
+[PASS ] 10. Varios undo() consecutivos
+[PASS ] 11. process_next() con la Queue vacia -> Empty
+[PASS ] 12. undo() con historial vacio -> Empty
+[PASS ] 13. Deshacer la creacion de un dato que no existia
+[PASS ] 14. Varios cambios sobre la misma variable
+[PASS ] 15. add() con formato incorrecto
+[PASS ] 16. add() con value no numerico
+[PASS ] 17. current_value() de un sensor/variable nunca procesado -> KeyError
+
+   Pruebas obligatorias (1-17): 17/17 OK
+
+== Casos borde adicionales ==
+
+[PASS ] undo de una creacion entre actualizaciones de otra variable
+[PASS ] Sensores y variables distintos no se mezclan
+[PASS ] Acepta int y float; sigue funcionando tras un Empty
+
+   Casos borde adicionales: 3/3 OK
+
+== Bonus: redo() (opcional) ==
+
+[FAIL ] redo() tras un undo
+        -> tras redo: esperaba 30, obtuvo 25
+[FAIL ] Varios undo y varios redo (orden inverso)
+        -> primer redo: esperaba 25, obtuvo 20
+[FAIL ] redo() recrea un dato que habia sido deshecho
+        -> tras redo: esperaba 23.5, obtuvo 'NO_EXISTE'
+
+   Bonus: redo() (opcional): 0/3 OK
+
+== RESUMEN ==
+
+   Interfaz y restricciones          5/ 5 OK   0 fallo(s)
+   Pruebas obligatorias (1-17)      17/17 OK   0 fallo(s)
+   Casos borde adicionales           3/ 3 OK   0 fallo(s)
+   Bonus: redo() (opcional)          0/ 3 OK   3 fallo(s)
+
+   Total sin bonus: 25/25 OK
+
+== CODIGO DE LA CLASE ==
+
+class DataProcessor:
+    def __init__(self):
+        self._queue = ArrayQueue()      # registros pendientes
+        self._stack = ArrayStack()      # historial para deshacer
+        self._state = []                # estado actual: [(sensor, variable, value), ...]
+        self._redo_stack = ArrayStack() #Agregamos una segunda pila paro poder hacer redo
+
+== INTEGRIDAD ==
+SHA256 codigo de la clase : ca55328137d8476f661a6038b5f80f36cabc0b1e97c19d1d2d4741c1be3c780b
+SHA256 de este informe    : 145861f4f38dbaf004417f2de80a53ad20b9cd1a3df6331c69b6605e08abd215
